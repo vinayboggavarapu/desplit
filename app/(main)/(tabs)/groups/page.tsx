@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import prisma from '@/lib/db'
 import { TGroup } from '@/types/group'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { Suspense } from 'react'
 
 const GroupsPage = async () => {
@@ -37,7 +38,7 @@ const GroupsPage = async () => {
        <h2 className='text-2xl font-semibold'>Hey {session?.user?.name}, you are owed total of <span className='font-semibold text-primaryColor'>$1000</span></h2>
        <div className='grid md:grid-cols-3 gap-12 p-5 max-h-[60vh] overflow-y-auto'>
         {groups.length>0?groups.map((group:TGroup)=>(
-          <div key={group.id} className='flex items-center gap-4 hover:cursor-pointer'>
+          <Link key={group.id} href={`/groups/${group.id}`}   className='flex items-center gap-4 hover:cursor-pointer'>
         <Image src={"/vercel.svg"} alt='user' width={70} height={70}/>
         <div className='flex flex-col gap-1'>
           <p className='text-lg font-semibold'>{group.name}</p>
@@ -47,7 +48,7 @@ const GroupsPage = async () => {
             <p>Show +2 more</p>
           </div>
         </div>
-       </div>
+       </Link>
         )):
         <p className='text-center text-lg font-semibold'>No groups found</p>}
        </div>

@@ -40,3 +40,23 @@ export async function manageGroups({
     }
 
 }
+
+
+export const getGroupById=async(id:string)=>{
+    const session=await auth()
+    if(!session?.user) throw new Error("Unauthorized")
+    try {
+        const group=await prisma.groups.findUnique({where:{id},include:{
+            expenses:{
+                include:{
+                    expense_members:true
+                }
+            }
+        }})
+
+        return group
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}

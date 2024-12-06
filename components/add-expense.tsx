@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dialog, DialogTitle, DialogContent, DialogHeader, DialogTrigger, DialogFooter } from './ui/dialog'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
@@ -11,8 +11,11 @@ import { User } from '@prisma/client'
 import { useMutation } from '@tanstack/react-query'
 import { addExpense } from '@/actions/manage-expense'
 import { TGroup } from '@/types/group'
+import { useSession } from 'next-auth/react'
 
 const AddExpense = ({groups}:{groups:TGroup[]}) => {
+  const {data}=useSession()
+  const [open,setOpen]=useState(false)
   const [expense,setExpense]=useState<{
     name : string,
     amount : number,
@@ -25,6 +28,8 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
     selected:[]
   })
 
+  console.log(groups)
+
   const  {mutate,isPending}=useMutation({
     mutationFn:async()=>{
       await addExpense({
@@ -33,26 +38,29 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
         groupId:expense.selectedGroup,
         selected:expense.selected
       })
+    },
+    onSuccess:()=>{
+      setOpen(false)
     }
   })
 
-  const selectedGroupMembers:Pick<User,"id" | "email" | "name">[]=groups.find((group)=>group.id===expense.selectedGroup)?.users
+  const selectedGroupMembers=(groups.find((group)=>group.id===expense.selectedGroup)?.users)?.filter((user)=>user.email!==data?.user?.email)
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant={"ghost"} className='bg-primaryColor text-white font-semibold text-[1.05rem] p-2 rounded-full'>+ Add Expense</Button>
       </DialogTrigger>
-      <DialogContent className='h-[80vh] w-[80vw] flex flex-col gap-8 justify-normal'>
+      <DialogContent className='h-[100svh] w-[100vw] md:h-[80vh] md:w-[80vw] flex flex-col gap-8 justify-normal'>
         <DialogHeader className='h-fit'>
           <DialogTitle>Add Expense</DialogTitle>
         </DialogHeader>
         <div className='flex flex-col gap-4 justify-start'>
-          <Input placeholder='Expense Name'/>
-          <Input type='number' placeholder='Expense amount'/>
+          <Input onChange={(e)=>setExpense({...expense,name:e.target.value})} placeholder='Expense Name'/>
+          <Input type='number' onChange={(e)=>setExpense({...expense,amount:Number(e.target.value)})} placeholder='Expense amount'/>
           <div className='my-4 mx-auto'>
             <p>Paid by <span className='text-primaryColor font-bold p-2 rounded-md'>You</span> and split <span className='text-primaryColor font-bold p-2 rounded-md'>among</span></p>
           </div>
-          {expense.selected.length>0&&<div className='flex flex-col gap-4 h-[30vh] overflow-y-auto'>
+          {expense.selectedGroup&&<div className='flex flex-col gap-4 h-[30vh] overflow-y-auto'>
             {groups.length>0?selectedGroupMembers?.map((user)=>(
             <div key={user.id} className='flex items-center justify-between'>
               <div className='flex items-center gap-4'>
@@ -62,6 +70,7 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
                 </AvatarFallback>
                 <AvatarImage src='https://github.com/a.png'/>
               </Avatar>
+              <p>{user.name}</p>
               </div>
               <Checkbox checked={expense.selected.includes(user.id)} onCheckedChange={e=>{
                 if(e){
@@ -75,9 +84,12 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
             <p className='text-center text-lg font-semibold'>No groups found</p>}
             </div>}
         </div>
-        <DialogFooter className='mt-auto flex justify-between w-full'>
+        <DialogFooter className='mt-auto flex flex-row justify-between items-center w-full'>
+          <div className='w-fit'>
         <DropdownMenu>
-      <DropdownMenuTrigger className='flex items-center gap-2 w-fit pl-2'><Users2 className='w-4 h-4'/> {expense.selectedGroup?groups.find((group)=>group.id===expense.selectedGroup)?.name:"Group"}</DropdownMenuTrigger>
+      <DropdownMenuTrigger className='flex items-center gap-2 pl-2'>
+        <Users2 className='w-4 h-4'/> {expense.selectedGroup?groups.find((group)=>group.id===expense.selectedGroup)?.name:"Group"}
+        </DropdownMenuTrigger>
   <DropdownMenuContent align='start'>
    {
     groups.length>0?groups.map((group)=>(
@@ -87,8 +99,9 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
    }
   </DropdownMenuContent>
 </DropdownMenu>
-<div className='w-full flex justify-end'>
-            <Button onClick={()=>mutate()} disabled={isPending||!expense.name||!expense.amount||!expense.selectedGroup||!expense.selected.length} className='bg-primaryColor w-fit text-white font-semibold text-[1.05rem] p-2 rounded-full'>{isPending?<Loader2 className='w-4 h-4 animate-spin'/>:"Save"}</Button>
+</div>
+<div className='w-fit md:w-full flex justify-end items-center'>
+            <Button onClick={()=>mutate()} disabled={isPending||!expense.name||!expense.amount||!expense.selectedGroup||!expense.selected.length} className='bg-primaryColor text-white font-semibold text-[1.05rem] p-2 rounded-full'>{isPending?<Loader2 className='w-4 h-4 animate-spin'/>:"Save"}</Button>
           </div>
         </DialogFooter>
       </DialogContent>

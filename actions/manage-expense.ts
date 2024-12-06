@@ -17,6 +17,8 @@ export const addExpense=async({
         success:false,
         error:"You are not authenticated"
     }
+
+    const userEmailData=await prisma.user.findUnique({where:{email:session.user.email!}})
     try {
         const otherMembers=selected.map((id)=>({
             user_id:id,
@@ -25,9 +27,9 @@ export const addExpense=async({
 
         const payeeMembers=[...otherMembers,{
             isPayee:true,
-            user_id:session.user.id
+            user_id:userEmailData?.id
         }]
-    await prisma.expense.create({
+    const expense=await prisma.expense.create({
         data:{
         amount,
         description,
@@ -41,9 +43,12 @@ export const addExpense=async({
             }))
         }
         }
+
     })
         
+    console.log("expense",expense)
     } catch (error:any) {
+        console.log("error",error.message)
         return {
             success:false,
             error:error?.message
