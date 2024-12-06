@@ -5,10 +5,9 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Checkbox } from './ui/checkbox'
-import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from './ui/select'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from './ui/dropdown-menu'
-import { Users2 } from 'lucide-react'
-import { groups, User } from '@prisma/client'
+import { Loader2, Users2 } from 'lucide-react'
+import { User } from '@prisma/client'
 import { useMutation } from '@tanstack/react-query'
 import { addExpense } from '@/actions/manage-expense'
 import { TGroup } from '@/types/group'
@@ -89,7 +88,7 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
   </DropdownMenuContent>
 </DropdownMenu>
 <div className='w-full flex justify-end'>
-            <Button disabled={isPending||!expense.name||!expense.amount||!expense.selectedGroup||!expense.selected.length} className='bg-primaryColor w-fit text-white font-semibold text-[1.05rem] p-2 rounded-full'>{isPending?"Saving...":"Save"}</Button>
+            <Button onClick={()=>mutate()} disabled={isPending||!expense.name||!expense.amount||!expense.selectedGroup||!expense.selected.length} className='bg-primaryColor w-fit text-white font-semibold text-[1.05rem] p-2 rounded-full'>{isPending?<Loader2 className='w-4 h-4 animate-spin'/>:"Save"}</Button>
           </div>
         </DialogFooter>
       </DialogContent>
