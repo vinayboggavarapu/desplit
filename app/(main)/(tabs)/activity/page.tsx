@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Page = () => {
+const ActivityPage = () => {
   return (
     <div>
-      
+        This is the activity page
     </div>
   )
 }
 
-export default Page
+export default ActivityPage
