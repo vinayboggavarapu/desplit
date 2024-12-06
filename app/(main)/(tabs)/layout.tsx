@@ -4,8 +4,9 @@ import QueryProvider from '@/utils/providers/query.provider'
 import SessionWrapper from '@/utils/providers/session.provider'
 import React from 'react'
 
-const Layout = ({children}:{children:React.ReactNode}) => {
+const Layout =({children}:{children:React.ReactNode}) => {
   return (      
+    //@ts-ignore
     <SessionWrapper>
       <QueryProvider>
     <div className='h-[100svh] overflow-clip flex flex-col'>

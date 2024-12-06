@@ -37,7 +37,7 @@ const GroupsPage = async () => {
        <div className='grid md:grid-cols-3 gap-12 p-5 max-h-[60vh] overflow-y-auto'>
         {groups.length>0?groups.map((group)=>(
           <div key={group.id} className='flex items-center gap-4 hover:cursor-pointer'>
-        <Image src={"/final.png"} alt='user' width={70} height={70}/>
+        <Image src={"/vercel.svg"} alt='user' width={70} height={70}/>
         <div className='flex flex-col gap-1'>
           <p className='text-lg font-semibold'>{group.name}</p>
           <p className='text-primaryColor'>you are owned $100</p>

@@ -63,7 +63,7 @@ const AddGroup = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='p-0'>
+        <Button variant={"ghost"} className='p-0'>
         <LucideUserRoundPlus className='text-primaryColor !size-6'/>
         </Button>
       </DialogTrigger>

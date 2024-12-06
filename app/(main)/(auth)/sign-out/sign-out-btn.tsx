@@ -4,7 +4,6 @@ import React from "react";
 import { signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 function SignOutButton() {
-  const {data} = useSession();
   const handleSignIn = async () => {
     await signOut();
   };

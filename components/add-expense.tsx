@@ -9,17 +9,35 @@ import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from '.
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { Users2 } from 'lucide-react'
 import { groups, User } from '@prisma/client'
+import { useMutation } from '@tanstack/react-query'
+import { addExpense } from '@/actions/manage-expense'
 
 
 type TGroup=groups & {
   users:Pick<User,"id" | "email" | "name">[]
 }
 const AddExpense = ({groups}:{groups:TGroup[]}) => {
-  const [expense,setExpense]=useState({
+  const [expense,setExpense]=useState<{
+    name : string,
+    amount : number,
+    selectedGroup:string,
+    selected:string[]
+  }>({
     name : "",
     amount : 0,
     selectedGroup:"",
     selected:[]
+  })
+
+  const  {mutate,isPending  }=useMutation({
+    mutationFn:async()=>{
+      await addExpense({
+        amount:expense.amount,
+        description:expense.name,
+        groupId:expense.selectedGroup,
+        selected:expense.selected
+      })
+    }
   })
 
   const selectedGroupMembers=groups.find((group)=>group.id===expense.selectedGroup)?.users
@@ -38,7 +56,7 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
           <div className='my-4 mx-auto'>
             <p>Paid by <span className='text-primaryColor font-bold p-2 rounded-md'>You</span> and split <span className='text-primaryColor font-bold p-2 rounded-md'>among</span></p>
           </div>
-          <div className='flex flex-col gap-4 h-[30vh] overflow-y-auto'>
+          {expense.selected.length>0&&<div className='flex flex-col gap-4 h-[30vh] overflow-y-auto'>
             {groups.length>0?selectedGroupMembers?.map((user)=>(
             <div key={user.id} className='flex items-center justify-between'>
               <div className='flex items-center gap-4'>
@@ -49,7 +67,7 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
                 <AvatarImage src='https://github.com/a.png'/>
               </Avatar>
               </div>
-              <Checkbox checked={expense.selected?.includes(user?.id)} onCheckedChange={e=>{
+              <Checkbox checked={expense.selected.includes(user.id)} onCheckedChange={e=>{
                 if(e){
                     setExpense({...expense,selected:[...(expense.selected??[]),user.id]})
                 }else{
@@ -59,7 +77,7 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
                   </div>
             )):
             <p className='text-center text-lg font-semibold'>No groups found</p>}
-          </div>
+            </div>}
         </div>
         <DialogFooter className='mt-auto flex justify-between w-full'>
         <DropdownMenu>
@@ -74,7 +92,7 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
   </DropdownMenuContent>
 </DropdownMenu>
 <div className='w-full flex justify-end'>
-          <Button className='bg-primaryColor w-fit text-white font-semibold text-[1.05rem] p-2 rounded-full'>Save</Button>
+            <Button disabled={isPending||!expense.name||!expense.amount||!expense.selectedGroup||!expense.selected.length} className='bg-primaryColor w-fit text-white font-semibold text-[1.05rem] p-2 rounded-full'>{isPending?"Saving...":"Save"}</Button>
           </div>
         </DialogFooter>
       </DialogContent>
