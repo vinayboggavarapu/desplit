@@ -4,6 +4,7 @@ import AddGroup from '@/components/add-group'
 import RouteHeader from '@/components/route-header'
 import { Skeleton } from '@/components/ui/skeleton'
 import prisma from '@/lib/db'
+import { TGroup } from '@/types/group'
 import Image from 'next/image'
 import React, { Suspense } from 'react'
 
@@ -35,7 +36,7 @@ const GroupsPage = async () => {
       <Suspense fallback={<Skeleton className='w-full h-[100px]'/>}>
        <h2 className='text-2xl font-semibold'>Hey {session?.user?.name}, you are owed total of <span className='font-semibold text-primaryColor'>$1000</span></h2>
        <div className='grid md:grid-cols-3 gap-12 p-5 max-h-[60vh] overflow-y-auto'>
-        {groups.length>0?groups.map((group)=>(
+        {groups.length>0?groups.map((group:TGroup)=>(
           <div key={group.id} className='flex items-center gap-4 hover:cursor-pointer'>
         <Image src={"/vercel.svg"} alt='user' width={70} height={70}/>
         <div className='flex flex-col gap-1'>

@@ -11,11 +11,8 @@ import { Users2 } from 'lucide-react'
 import { groups, User } from '@prisma/client'
 import { useMutation } from '@tanstack/react-query'
 import { addExpense } from '@/actions/manage-expense'
+import { TGroup } from '@/types/group'
 
-
-type TGroup=groups & {
-  users:Pick<User,"id" | "email" | "name">[]
-}
 const AddExpense = ({groups}:{groups:TGroup[]}) => {
   const [expense,setExpense]=useState<{
     name : string,
@@ -29,7 +26,7 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
     selected:[]
   })
 
-  const  {mutate,isPending  }=useMutation({
+  const  {mutate,isPending}=useMutation({
     mutationFn:async()=>{
       await addExpense({
         amount:expense.amount,
@@ -40,7 +37,7 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
     }
   })
 
-  const selectedGroupMembers=groups.find((group)=>group.id===expense.selectedGroup)?.users
+  const selectedGroupMembers:Pick<User,"id" | "email" | "name">[]=groups.find((group)=>group.id===expense.selectedGroup)?.users
   return (
     <Dialog>
       <DialogTrigger asChild>
