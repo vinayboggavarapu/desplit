@@ -24,7 +24,7 @@ const QrDialog = () => {
     <Dialog>
     <DialogTrigger asChild>
       <Button variant="outline">
-      <QrCode/>
+      <QrCode className='!size-5'/>
       </Button>
     </DialogTrigger>
     <DialogContent className='p-5'>
