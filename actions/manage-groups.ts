@@ -49,7 +49,17 @@ export const getGroupById=async(id:string)=>{
         const group=await prisma.groups.findUnique({where:{id},include:{
             expenses:{
                 include:{
-                    expense_members:true
+                    expense_members:{
+                        include:{
+                            user:{
+                                select:{
+                                    id:true,
+                                    name:true,
+                                    email:true
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }})
