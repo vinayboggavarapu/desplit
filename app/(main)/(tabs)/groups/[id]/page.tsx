@@ -8,12 +8,20 @@ import Link from 'next/link'
 import React, { Suspense } from 'react'
 import { format } from 'date-fns'
 import { auth } from '@/auth'
+import { cn } from '@/lib/utils'
 
 const Page = async ({params}:{params:{id:string}}) => {
   const group=await getGroupById(params.id)
   console.log("group asdasd",group)
   const session=await auth()
-  const currentUserPayee=group?.expenses.find((expense)=>expense.expense_members.find((member)=>member.user?.email===session?.user?.email))
+  
+  const isPayee=(id:string)=>{
+    return group?.expenses.find((expense)=>expense.id===id)?.expense_members.find((member)=>member.user?.email===session?.user?.email)?.isPayee
+  }
+
+  const payeeName=(id:string)=>{
+    return group?.expenses.find((expense)=>expense.id===id)?.expense_members.find((member)=>member.isPayee)?.user?.name
+  }
   return (
       <Suspense fallback={<Skeleton className='w-full h-[100px]'/>}>
     <div className='flex flex-col gap-4'>
@@ -30,10 +38,10 @@ const Page = async ({params}:{params:{id:string}}) => {
             </div>
             <div>
             <p>{expense.description}</p>
-            <p className='text-sm'>{currentUserPayee?"You have paid":expense.expense_members.find((member)=>member.isPayee)?.user?.name} <span className='text-primaryColor'>${expense.amount}</span></p>
+            <p className='text-sm'>{isPayee(expense.id)?"You have paid":payeeName(expense.id)} <span>${expense.amount}</span></p>
             </div>
             </div>
-            <p className='text-sm'>{currentUserPayee?"You owe":"You borrowed"} <br/> <span className='text-primaryColor'>${expense.amount-expense.amount/expense.expense_members.length}</span></p>
+            <p className={cn("text-sm text-end",isPayee(expense.id)?"text-primaryColor":"text-orange-300")}>{isPayee(expense.id)?"You lent":"You borrowed"} <br/> <span className={cn("text-primaryColor",isPayee(expense.id)?"primaryColor":"text-orange-300")}>${expense.amount-expense.amount/expense.expense_members.length}</span></p>
           </div>
         ))
       }
