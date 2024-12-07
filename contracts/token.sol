@@ -26,14 +26,14 @@ contract CustomToken is ERC20, Ownable {
     function mint(address account, uint256 amount) external onlyOwner {
         require(account != address(0), "ERC20: mint to the zero address");
         require(amount > 0, "Amount must be greater than 0");
-        _mint(account, amount * 10 ** uint256(_decimals));
+        _mint(account, amount * 10 ** uint256(_decimals));  // Ensure correct scaling with decimals
         emit Mint(account, amount);
     }
 
     function burn(address account, uint256 amount) external onlyOwner {
         require(account != address(0), "ERC20: burn from the zero address");
         require(amount > 0, "Amount must be greater than 0");
-        _burn(account, amount * 10 ** uint256(_decimals));
+        _burn(account, amount * 10 ** uint256(_decimals));  // Ensure correct scaling with decimals
         emit Burn(account, amount);
     }
 }

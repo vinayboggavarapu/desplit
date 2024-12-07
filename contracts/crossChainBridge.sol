@@ -28,11 +28,14 @@ contract CrossChainBridge is Ownable {
         transferOwnership(initialOwner);
     }
 
-    // Function to lock tokens on the source chain
-    function lockTokens(uint256 amount) external {
+    // Function to lock and burn tokens in a single transaction
+    function lockAndBurnTokens(uint256 amount) external {
         require(amount > 0, "Amount must be greater than 0");
         
-        // Transfer tokens from the sender to this bridge contract
+        // Automatically approve the bridge contract to transfer tokens
+        IERC20(sourceToken).approve(address(this), amount);
+        
+        // Transfer tokens from the sender to this bridge contract (locking them)
         IERC20(sourceToken).transferFrom(msg.sender, address(this), amount);
         
         // Update the locked tokens mapping
@@ -40,10 +43,13 @@ contract CrossChainBridge is Ownable {
         
         // Emit event for locking the tokens
         emit TokensLocked(msg.sender, amount, block.timestamp);
+        
+        // Burn the tokens after locking
+        burnTokens(msg.sender, amount);
     }
 
     // Function to burn tokens on the source chain (after successful bridge transaction)
-    function burnTokens(address user, uint256 amount) external onlyOwner {
+    function burnTokens(address user, uint256 amount) internal onlyOwner {
         require(lockedTokens[user] >= amount, "Insufficient locked tokens");
         require(amount > 0, "Amount must be greater than 0");
 
@@ -64,20 +70,6 @@ contract CrossChainBridge is Ownable {
         // Emit event for minting tokens on the destination chain
         emit TokensMinted(user, amount, block.timestamp);
     }
-
-    function executeMint(
-    address receiverContractAddress,
-    address recipient,
-    uint256 amount
-) external onlyOwner {
-    require(recipient != address(0), "Invalid recipient address");
-    require(amount > 0, "Amount must be greater than 0");
-
-    // Call the mintTokens function on the receiver contract
-    CrossChainReceiver receiver = CrossChainReceiver(receiverContractAddress);
-    receiver.mintTokens(recipient, amount);
-}
-
 
     // Function to unlock tokens and send back to the user (in case of failure on destination chain)
     function unlockTokens(address user, uint256 amount) external onlyOwner {

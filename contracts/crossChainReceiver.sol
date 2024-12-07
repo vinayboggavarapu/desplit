@@ -7,6 +7,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract CrossChainReceiver is ERC20, Ownable {
     address public bridgeAddress;
 
+    uint8 private _decimals = 6;  // Assuming the token has 6 decimals
+
     event TokensMinted(address indexed to, uint256 amount);
 
     constructor(string memory name, string memory symbol, address initialOwner) Ownable(initialOwner) ERC20(name, symbol) {}
@@ -19,14 +21,19 @@ contract CrossChainReceiver is ERC20, Ownable {
     // Mint tokens after receiving valid cross-chain transfer info
     function mintTokens(address to, uint256 amount) external {
         require(msg.sender == bridgeAddress, "Only bridge contract can mint tokens");
-        _mint(to, amount);
-        emit TokensMinted(to, amount);
+
+        // Adjust amount for the custom decimal places
+        uint256 adjustedAmount = amount * 10 ** uint256(_decimals);
+
+        // Mint the tokens with adjusted amount
+        _mint(to, adjustedAmount);
+
+        emit TokensMinted(to, adjustedAmount);
     }
 
     // Token validation function (signature verification or proof)
     function validateTransfer() external pure returns (bool) {
-    // Implement logic for verifying the Merkle proof or signature
-    return true;
+        // Implement logic for verifying the Merkle proof or signature
+        return true;
     }
 }
-//uint256 amount, bytes memory proof
