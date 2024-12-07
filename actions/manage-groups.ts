@@ -21,7 +21,7 @@ export async function manageGroups({
                 name,
                 users : {
                     connect:membersList.map((member)=>({
-                        email:member
+                        email:String(member).toLowerCase()
                     }))
                 },
                 image
