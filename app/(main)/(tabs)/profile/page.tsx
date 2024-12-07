@@ -1,5 +1,5 @@
 "use client";
-import React from 'react'
+import React, { useEffect } from 'react'
 import SignOutButton from '../../(auth)/sign-out/sign-out-btn'
 import { useSession } from 'next-auth/react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -13,10 +13,12 @@ import Image from 'next/image';
 import FundMeOnRamp from '@/components/fund-me.onramp';
 import { Card } from '@/components/ui/card';
 import { useAccount } from 'wagmi';
+import { useMutation } from '@tanstack/react-query';
+import { updatePrimaryAccount } from '@/actions/account';
 
 const ProfilePage = () => {
   const {data} = useSession();
-  const {address} = useAccount()
+  const {address,chainId} = useAccount()
 
   const generateQR = async (text:string) => {
     try {
@@ -25,6 +27,16 @@ const ProfilePage = () => {
       console.error(err)
     }
   }
+
+  const {mutate:setPrimaryAccount}=useMutation({
+    mutationFn:()=>updatePrimaryAccount(address!,chainId!)
+  })
+
+  useEffect(()=>{
+    if(address && chainId){
+      setPrimaryAccount()
+    }
+  },[address,chainId])
 
   return (
     <div className='flex flex-col justify-between h-full max-w-3xl mx-auto'>

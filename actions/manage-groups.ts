@@ -57,7 +57,7 @@ export const getGroupById=async(id:string)=>{
                                 select:{
                                     id:true,
                                     name:true,
-                                    email:true
+                                    email:true,
                                 }
                             }
                         }
