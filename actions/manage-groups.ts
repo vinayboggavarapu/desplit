@@ -47,6 +47,7 @@ export const getGroupById=async(id:string)=>{
     if(!session?.user) throw new Error("Unauthorized")
     try {
         const group=await prisma.groups.findUnique({where:{id},include:{
+            users:true,
             expenses:{
                 include:{
                     expense_members:{
