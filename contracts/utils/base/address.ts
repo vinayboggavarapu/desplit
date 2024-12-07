@@ -1,0 +1,6 @@
+
+export const baseContractAddress={
+    BASE_TOKEN_ADDRESS    : "0x3F7AC01d31B216e13cE42873Ad1f343184a095d2",
+    BASE_BRIDGE_ADDRESS   : "0x179b09ad8dfe1d4f8974f6f1f32e510b39f2de8c",
+    BASE_RECEIVER_ADDRESS : "0x379cd948cfcd6348ca9a50a5c5edfad95ca80e6d"
+}

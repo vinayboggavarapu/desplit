@@ -3,7 +3,7 @@ import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
-import { mainnet, polygon, optimism, arbitrum, base, sepolia } from 'wagmi/chains';
+import { mainnet, polygon, optimism, arbitrum, base, sepolia, opBNB, baseSepolia } from 'wagmi/chains';
 
 const queryClient = new QueryClient();
 
@@ -12,7 +12,7 @@ const QueryProvider = ({children}:{children:React.ReactNode}) => {
   const config = getDefaultConfig({
     appName: 'Desplit',
     projectId: process.env.NEXT_PUBLIC_PROJECT_ID!,
-    chains: [mainnet, sepolia, optimism, arbitrum, base],
+    chains: [baseSepolia,opBNB],
     ssr: true, // If your dApp uses server side rendering (SSR)
   });
   return (

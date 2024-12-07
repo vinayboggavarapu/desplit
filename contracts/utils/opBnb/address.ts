@@ -1,5 +1,5 @@
 export const opBnbContractAddress={
-    tokenAddress: "0x817afeb91b3ce2b99b4ee32004e6e48ce50cde59",
-    bridgeAddress: "0xb7587a39773b71bf6c5d900c66340434d3d72a34",
-    receiverAddress: "0x3c017b3198ca7c7b4f24d0526a57d90fd8561c87", //Base
+    tokenAddress: "0x16580C3625020830F23b1344c9EFe8568Ab1cf17"  ,
+    bridgeAddress: "0x0304293696a8f5c495e16cf3D599dF65f95FC3d5",
+    receiverAddress: "0x09ef3e52f11c36dd1baae51bddcfd4523994e338",
 }
