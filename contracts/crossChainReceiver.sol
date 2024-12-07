@@ -9,7 +9,7 @@ contract CrossChainReceiver is ERC20, Ownable {
 
     event TokensMinted(address indexed to, uint256 amount);
 
-    constructor(string memory name, string memory symbol) ERC20(name, symbol) {}
+    constructor(string memory name, string memory symbol, address initialOwner) Ownable(initialOwner) ERC20(name, symbol) {}
 
     // Set the bridge address (the source chain bridge contract)
     function setBridgeAddress(address _bridgeAddress) external onlyOwner {
@@ -24,8 +24,9 @@ contract CrossChainReceiver is ERC20, Ownable {
     }
 
     // Token validation function (signature verification or proof)
-    function validateTransfer(uint256 amount, bytes memory proof) external view returns (bool) {
-        // Implement logic for verifying the Merkle proof or signature
-        return true;
+    function validateTransfer() external pure returns (bool) {
+    // Implement logic for verifying the Merkle proof or signature
+    return true;
     }
 }
+//uint256 amount, bytes memory proof
