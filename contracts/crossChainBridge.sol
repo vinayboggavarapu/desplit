@@ -13,8 +13,8 @@ contract CrossChainBridge is Ownable {
     // Address of the token on the source chain (e.g., USDC, ETH, etc.)
     address public sourceToken;
 
-    // Event to emit when tokens are locked
-    event TokensLocked(address indexed user, uint256 amount, uint256 timestamp);
+    // Event to emit when tokens are locked with emailID and groupID
+    event TokensLockedWithInfo(address indexed user, uint256 amount, uint256 timestamp, string emailID, string groupID);
     
     // Event to emit when tokens are burned on the source chain
     event TokensBurned(address indexed user, uint256 amount, uint256 timestamp);
@@ -29,7 +29,7 @@ contract CrossChainBridge is Ownable {
     }
 
     // Function to lock and burn tokens in a single transaction
-    function lockAndBurnTokens(uint256 amount) external {
+    function lockAndBurnTokens(uint256 amount, string memory emailID, string memory groupID) external {
         require(amount > 0, "Amount must be greater than 0");
         
         // Automatically approve the bridge contract to transfer tokens
@@ -41,8 +41,8 @@ contract CrossChainBridge is Ownable {
         // Update the locked tokens mapping
         lockedTokens[msg.sender] += amount;
         
-        // Emit event for locking the tokens
-        emit TokensLocked(msg.sender, amount, block.timestamp);
+        // Emit event for locking the tokens with email and group info
+        emit TokensLockedWithInfo(msg.sender, amount, block.timestamp, emailID, groupID);
         
         // Burn the tokens after locking
         burnTokens(msg.sender, amount);
