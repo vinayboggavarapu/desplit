@@ -22,7 +22,7 @@ const Page = async ({params}:{params:{id:string}}) => {
       <p>{group?.name}</p>
       <SettleUp group={group}/>
       </div>
-      <div className='max-h-[50vh] h-full overflow-y-auto pr-2'>
+      <div className='max-h-[48vh] h-full overflow-y-auto pr-2'>
       {
         group?.expenses.map((expense)=>(
 <ExpenseListItem key={expense.id} expense={expense} group={group}/>
