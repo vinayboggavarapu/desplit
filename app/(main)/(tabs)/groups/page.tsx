@@ -88,7 +88,7 @@ const GroupsPage = async () => {
         </div>
        </Link>
         )):
-        <p className='text-center text-lg font-semibold'>No groups found</p>}
+        <p className='text-center text-lg font-semibold w-full'>No groups found</p>}
        </div>
         <div className='absolute bottom-2 right-2'>
           <AddExpense groups={groups}/>

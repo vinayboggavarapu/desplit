@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth";
 import prisma from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 export async function manageGroups({
     name,
@@ -56,7 +57,7 @@ export const getGroupById=async(id:string)=>{
                                 select:{
                                     id:true,
                                     name:true,
-                                    email:true
+                                    email:true,
                                 }
                             }
                         }
@@ -78,6 +79,7 @@ export const deleteGroup=async(id:string)=>{
     if(!session?.user) throw new Error("Unauthorized")
     try {
         await prisma.groups.delete({where:{id}})
+        revalidatePath("/groups")
         return {
             success:true,
             message:"Group deleted successfully"

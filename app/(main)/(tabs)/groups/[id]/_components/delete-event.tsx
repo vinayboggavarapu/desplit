@@ -8,16 +8,15 @@ import React from 'react'
 
 const RemoveGroup = ({id}:{id:string}) => {
     const router=useRouter()
-    const {mutate}=useMutation({
+    const {mutate,isPending}=useMutation({
         mutationFn:()=>deleteGroup(id),
         onSuccess:()=>{
-            router.refresh()
             router.push("/groups")
         }
     })
   return (
     <>
-        <Button variant="destructive" onClick={()=>{mutate()}}><Trash2/></Button>
+        <Button  disabled={isPending} variant="destructive" onClick={()=>{mutate()}}><Trash2/></Button>
         
     </>
   )
