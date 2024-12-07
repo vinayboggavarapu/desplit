@@ -46,12 +46,12 @@ const ProfilePage = () => {
         </div>
 
         <Card className="p-6 w-full bg-zinc-900/50 border-zinc-800/50 backdrop-blur-xl space-y-6">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col items-start gap-3 md:flex-row md:items-center justify-between">
             <h2 className="text-lg font-semibold text-white flex items-center gap-2">
               <Wallet className="w-5 h-5 text-emerald-500" />
               Connected Wallet
             </h2>
-            <div className="flex gap-2 ml-8">
+            <div className="flex gap-2">
               <ConnectButton />
             </div>
           </div>
