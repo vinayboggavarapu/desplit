@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import QRCode from 'qrcode';
 import QrDialog from '@/components/qr-dialog';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const ProfilePage = () => {
   const {data} = useSession();
@@ -38,6 +39,7 @@ const ProfilePage = () => {
         </div>
         <div className='w-full mt-2'>
           <h2 className='font-bold'>Connected Wallets</h2>
+          <ConnectButton />
         </div>
       </div>
        <SignOutButton/>
