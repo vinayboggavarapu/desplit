@@ -38,7 +38,7 @@ export const addExpense=async({
             create: payeeMembers.map((e)=>({
                 user_id:e.user_id!,
                 group_id:groupId!,
-                amount: e.isPayee?amount:amount/payeeMembers.length,
+                amount:amount/payeeMembers.length,
                 isPayee:e.isPayee,
             }))
         }

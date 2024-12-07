@@ -70,3 +70,22 @@ export const getGroupById=async(id:string)=>{
         return null
     }
 }
+
+
+export const deleteGroup=async(id:string)=>{
+    const session=await auth()  
+    if(!session?.user) throw new Error("Unauthorized")
+    try {
+        await prisma.groups.delete({where:{id}})
+        return {
+            success:true,
+            message:"Group deleted successfully"
+        }
+    } catch (error) {
+        console.log(error)
+        return {
+            success:false,
+            message:"Failed to delete group"
+        }
+    }
+}
