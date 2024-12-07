@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import QRCode from 'qrcode';
 import QrDialog from '@/components/qr-dialog';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import Image from 'next/image';
+import FundMeOnRamp from '@/components/fund-me.onramp';
 
 const ProfilePage = () => {
   const {data} = useSession();
@@ -38,8 +40,11 @@ const ProfilePage = () => {
           <QrDialog/>
         </div>
         <div className='w-full mt-2 flex flex-col gap-8'>
-          <h2 className='font-bold'>Connected Wallets</h2>
+          <h2 className='font-bold'>Connected Wallet</h2>
+          <div className='flex flex-col gap-2 items-center'>
           <ConnectButton />
+          </div>
+        <FundMeOnRamp/>
         </div>
       </div>
        <SignOutButton/>
