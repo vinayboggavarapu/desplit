@@ -11,7 +11,6 @@ const RemoveGroup = ({id}:{id:string}) => {
     const {mutate}=useMutation({
         mutationFn:()=>deleteGroup(id),
         onSuccess:()=>{
-            router.refresh()
             router.push("/groups")
         }
     })
