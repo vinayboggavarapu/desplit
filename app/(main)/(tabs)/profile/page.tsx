@@ -37,7 +37,7 @@ const ProfilePage = () => {
         </div>
           <QrDialog/>
         </div>
-        <div className='w-full mt-2'>
+        <div className='w-full mt-2 flex flex-col gap-8'>
           <h2 className='font-bold'>Connected Wallets</h2>
           <ConnectButton />
         </div>

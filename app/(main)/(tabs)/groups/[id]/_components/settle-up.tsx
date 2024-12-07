@@ -8,21 +8,21 @@ const SettleUp = ({group}:{group:any}) => {
     const [open,setOpen]=useState(false)
     const {data}=useSession()
 
+    console.log("group",group)
+
     // console.log(group)
 
 
  const allMembers=group?.users?.map((member:any)=>member.email).filter((member:any)=>member!==data?.user?.email)
-
   const getSettleMentAmountForUser=(email:string)=>{
     const settleMentAmount=group?.expenses.reduce((acc:number,expense:any)=>{
         const expenseMembers=expense.expense_members
-
+        console.log("expenseMembers",expenseMembers)
         const payee=expenseMembers.find((member:any)=>member.user?.email===email)
-        if(payee?.isPayee && !allMembers.includes(email)){
-            return acc+expense.amount
+        if(payee?.isPayee && !allMembers.includes(data?.user?.email!)){
+            return acc+expense.amount/expenseMembers.length
         }
-        return acc
-    },0)
+      },0)
     return settleMentAmount
   }
   return (
@@ -37,9 +37,9 @@ const SettleUp = ({group}:{group:any}) => {
             <div className='flex items-center'>
                 {
                     allMembers?.map((e:any)=>{
-                        return <div key={e} className='flex w-full items-center justify-between'>
-                            <p className='text-sm'>{e}</p>
-                            <div className='flex items-center gap-2'>
+                        return <div key={e} className='flex flex-col w-full items-start border-b border-gray-200 pb-2 justify-between flex-wrap'>
+                            <p className='text-[0.85rem]'>{e}</p>
+                            <div className='flex items-center gap-2 justify-between w-full'>
                             <p className='text-orange-300'>$ {getSettleMentAmountForUser(e)}</p>
                             <Button>Pay</Button>
                             </div>
