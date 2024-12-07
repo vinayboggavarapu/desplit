@@ -2,38 +2,43 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract CustomToken is ERC20, Ownable {
-    uint8 private _decimals = 6;
-
-    event Mint(address indexed to, uint256 amount);
-    event Burn(address indexed from, uint256 amount);
-
-    constructor(
-        string memory name, 
-        string memory symbol, 
-        uint256 initialSupply, 
-        address initialOwner
-    ) Ownable(initialOwner) ERC20(name, symbol) {
-        _mint(msg.sender, initialSupply * 10 ** uint256(_decimals));
+contract MyToken is ERC20, ERC20Burnable, Ownable {
+    // Constructor to initialize the token with name, symbol, and initial supply
+    constructor(string memory name_, string memory symbol_, uint256 initialSupply, address initialOwner) 
+        Ownable(initialOwner) 
+        ERC20(name_, symbol_) 
+    {
+        _mint(msg.sender, initialSupply * (10 ** decimals())); // Mint initial supply to the deployer
     }
 
+    // Override the decimals function to set the number of decimals to 2
     function decimals() public view virtual override returns (uint8) {
-        return _decimals;
+        return 0; // Set to 2 decimals
     }
 
-    function mint(address account, uint256 amount) external onlyOwner {
-        require(account != address(0), "ERC20: mint to the zero address");
+    // Mint new tokens (only callable by the owner)
+    function mint(address to, uint256 amount) public onlyOwner {
+        require(to != address(0), "Mint to the zero address");
         require(amount > 0, "Amount must be greater than 0");
-        _mint(account, amount * 10 ** uint256(_decimals));  // Ensure correct scaling with decimals
-        emit Mint(account, amount);
+
+        _mint(to, amount * (10 ** decimals())); // Use the overridden decimals
     }
 
-    function burn(address account, uint256 amount) external onlyOwner {
-        require(account != address(0), "ERC20: burn from the zero address");
-        require(amount > 0, "Amount must be greater than 0");
-        _burn(account, amount * 10 ** uint256(_decimals));  // Ensure correct scaling with decimals
-        emit Burn(account, amount);
+    // Transfer tokens using human-readable amounts
+    function transferHumanReadable(address recipient, uint256 amount) external returns (bool) {
+        return transfer(recipient, amount * (10 ** decimals())); // Use the overridden decimals
+    }
+
+    // Approve tokens using human-readable amounts
+    function approveHumanReadable(address spender, uint256 amount) external returns (bool) {
+        return approve(spender, amount * (10 ** decimals())); // Use the overridden decimals
+    }
+
+    // Transfer tokens from one address to another using human-readable amounts
+    function transferFromHumanReadable(address sender, address recipient, uint256 amount) external returns (bool) {
+        return transferFrom(sender, recipient, amount * (10 ** decimals())); // Use the overridden decimals
     }
 }
