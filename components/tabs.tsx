@@ -1,6 +1,6 @@
 "use client"
 import { cn } from '@/lib/utils'
-import { Activity, User, UsersRound } from 'lucide-react'
+import { Activity, Scan, User, UsersRound } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
@@ -12,11 +12,12 @@ const tabsSection=[
         icon: UsersRound ,
         href:"/groups"
     },
+    // {
+    //     title:"Scan",
+    //     icon: Scan,
+    //     href:"/activity"
+    // },
     {
-        title:"Activity",
-        icon: Activity,
-        href:"/activity"
-    },{
         title:"Profile",
         icon: User,
         href:"/profile"

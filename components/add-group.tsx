@@ -67,7 +67,7 @@ const AddGroup = () => {
         <LucideUserRoundPlus className='text-primaryColor !size-6'/>
         </Button>
       </DialogTrigger>
-      <DialogContent className='h-[80vh] w-[80vw] flex flex-col gap-8 justify-normal'>
+      <DialogContent className='h-[100svh] w-[100vw] md:h-[80vh] md:w-[80vw] flex flex-col gap-8 justify-normal'>
         <DialogHeader className='h-fit'>
           <DialogTitle>Add Expense</DialogTitle>
         </DialogHeader>
