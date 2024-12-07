@@ -1,6 +1,6 @@
 "use client"
 import { cn } from '@/lib/utils'
-import { Activity, Scan, User, UsersRound } from 'lucide-react'
+import { Activity, Circle, Scan, User, UsersRound } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
@@ -19,7 +19,7 @@ const tabsSection=[
     // },
     {
         title:"Profile",
-        icon: User,
+        icon: Circle,
         href:"/profile"
     }
 ]

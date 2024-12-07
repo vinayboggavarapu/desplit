@@ -1,9 +1,10 @@
+"use client"
+
 import { generateOnRampURL } from "@coinbase/cbpay-js";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { useAccount } from "wagmi";
-
-
+import { ExternalLink } from "lucide-react";
 
 const FundMeOnRamp = () => {
 
@@ -18,12 +19,14 @@ const FundMeOnRamp = () => {
           { address: "0x6a111612F1f87869E1A494B40Cc997c70cD3B014", blockchains: ["ETH"] },
         ]
       });
-  return <div className='flex flex-col gap-2 items-center mt-4'>
-  Don't have enough balance?
-  <Button variant='ghost' className='p-0' onClick={() => window.open(onRampURL, '_blank')}>
-    <Image src={"/fund.png"} alt='coinbase' width={1000} height={1000} className="w-30 h-10 object-contain"/>
-  </Button>
-</div>    
+  return  <div className="space-y-4">
+    <p className="text-zinc-400 text-sm">  Don't have enough balance?</p>
+    <Button variant='ghost' onClick={() => window.open(onRampURL, '_blank')} className="w-full text-white bg-blue-600">
+    Add crypto with Coinbase Pay
+    <ExternalLink className="w-4 h-4 ml-2" />
+    </Button>
+  </div>
+
 }  
 
 export default FundMeOnRamp;

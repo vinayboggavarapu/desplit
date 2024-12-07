@@ -10,7 +10,7 @@ const Layout =({children}:{children:React.ReactNode}) => {
     //@ts-ignore
     <SessionWrapper>
       <QueryProvider>
-    <div className='h-[100svh] overflow-clip flex flex-col'>
+    <div className='h-[100svh] overflow-clip flex flex-col bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950'>
         <div className='flex-1 p-5 max-w-7xl w-full mx-auto'>
       {children}
       </div>

@@ -76,7 +76,7 @@ const GroupsPage = async () => {
        <h2 className={cn('text-2xl font-semibold')}>Hey {session?.user?.name}, {getTotalGroupLent()>0?'You are owed total of':'You have borrowed total of'} <span className={cn('font-semibold',getTotalGroupLent()>0?'text-primaryColor':'text-orange-300')}>${getTotalGroupLent()>0?getTotalGroupLent():getTotalGroupLent()*-1}</span></h2>
        <div className='grid md:grid-cols-3 gap-12 p-5 max-h-[60vh] overflow-y-auto'>
         {groups.length>0?groups.map((group:TGroup)=>(
-          <Link key={group.id} href={`/groups/${group.id}`}   className='flex items-center gap-4 hover:cursor-pointer'>
+          <Link key={group.id} href={`/groups/${group.id}`}   className='flex items-center gap-4 hover:cursor-pointer p-6 rounded-2xl bg-gradient-to-br from-zinc-800/50 via-zinc-900/50 to-zinc-900/50 backdrop-blur-xl border border-zinc-800/50 hover:border-zinc-700/50 transition-colors'>
         <Image src={"/vercel.svg"} alt='user' width={70} height={70}/>
         <div className='flex flex-col gap-1'>
           <p className='text-lg font-semibold'>{group.name}</p>
