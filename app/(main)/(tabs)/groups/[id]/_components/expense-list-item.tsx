@@ -39,13 +39,13 @@ const ExpenseListItem = ({expense,group}:{expense:Expense,group:any}) => {
     </div>
     </div>
     <p className={cn("text-sm text-end",isPayee(expense.id)?"text-primaryColor":"text-orange-300")}>{isPayee(expense.id)?"You lent":"You borrowed"} <br/> <span className={cn("text-primaryColor",isPayee(expense.id)?"primaryColor":"text-orange-300")}>${expense.amount-expense.amount/expense.expense_members.length}</span></p>
-    {selectedExpenseId===expense.id&&<Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-            <DialogHeader>
+    <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent onClick={(e)=>{
+            e.stopPropagation()
+        }}>
                 <DialogTitle>
                     {expense.description}
                 </DialogTitle>
-                <DialogContent>
                     <div className='flex flex-col gap-2 mt-8'>   
                         {expense.expense_members.map((member:any)=>(
                             <div key={member.id} className='flex items-center justify-between'>
@@ -54,10 +54,8 @@ const ExpenseListItem = ({expense,group}:{expense:Expense,group:any}) => {
                             </div>
                         ))} 
                     </div>
-                </DialogContent>
-                </DialogHeader>
         </DialogContent>
-    </Dialog>}
+    </Dialog>
   </div>
 
   )

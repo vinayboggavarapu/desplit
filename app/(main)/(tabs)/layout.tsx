@@ -2,6 +2,7 @@ import Tabs from '@/components/tabs'
 import { Toaster } from '@/components/ui/toaster'
 import QueryProvider from '@/utils/providers/query.provider'
 import SessionWrapper from '@/utils/providers/session.provider'
+import '@rainbow-me/rainbowkit/styles.css'
 import React from 'react'
 
 const Layout =({children}:{children:React.ReactNode}) => {

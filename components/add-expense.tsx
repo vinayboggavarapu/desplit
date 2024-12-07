@@ -12,9 +12,11 @@ import { useMutation } from '@tanstack/react-query'
 import { addExpense } from '@/actions/manage-expense'
 import { TGroup } from '@/types/group'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 const AddExpense = ({groups}:{groups:TGroup[]}) => {
   const {data}=useSession()
+  const router=useRouter()
   const [open,setOpen]=useState(false)
   const [expense,setExpense]=useState<{
     name : string,
@@ -28,7 +30,7 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
     selected:[]
   })
 
-  console.log(groups)
+  // console.log(groups)
 
   const  {mutate,isPending}=useMutation({
     mutationFn:async()=>{
@@ -40,6 +42,7 @@ const AddExpense = ({groups}:{groups:TGroup[]}) => {
       })
     },
     onSuccess:()=>{
+      router.refresh()
       setOpen(false)
     }
   })
