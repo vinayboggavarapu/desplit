@@ -45,7 +45,7 @@ const SettleUp = ({group}:{group:any}) => {
   })=>{
     setPending(true)
     sendTransaction({ to:receipent as `0x${string}` , value: parseEther(String(amount * 0.00025)) }  )
-    await updateGroupMembers({groupId:group.id,email:data?.user?.email as string})
+    
 
     // writeContract({
     //   address: baseContractAddress.BASE_BRIDGE_ADDRESS as `0x${string}`,
