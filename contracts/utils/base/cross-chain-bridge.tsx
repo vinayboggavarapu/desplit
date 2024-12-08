@@ -1,4 +1,4 @@
-export const tokenBaseAbi= [
+export const tokenBridgeBaseAbi= [
     {
         "inputs": [
             {
@@ -79,9 +79,9 @@ export const tokenBaseAbi= [
             },
             {
                 "indexed": false,
-                "internalType": "uint256",
+                "internalType": "string",
                 "name": "groupID",
-                "type": "uint256"
+                "type": "string"
             }
         ],
         "name": "TokensBurned",
@@ -137,9 +137,9 @@ export const tokenBaseAbi= [
                 "type": "string"
             },
             {
-                "internalType": "uint256",
+                "internalType": "string",
                 "name": "groupID",
-                "type": "uint256"
+                "type": "string"
             }
         ],
         "name": "initiateBridgeTransaction",

@@ -5,21 +5,21 @@ import { opBnbContractAddress } from '@/contracts/utils/opBnb/address'
 import { tokenBnbBridgeAbi } from '@/contracts/utils/opBnb/cross-chain-bridge'
 import { useContractWrite } from 'wagmi'
 import { useSession } from 'next-auth/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAccount, useWriteContract } from 'wagmi'
 import { Loader2 } from 'lucide-react'
 import axios from 'axios'
 import { baseContractAddress } from '@/contracts/utils/base/address'
-import { tokenBaseAbi } from '@/contracts/utils/base/cross-chain-bridge'
+import {  tokenBridgeBaseAbi } from '@/contracts/utils/base/cross-chain-bridge'
 
 const SettleUp = ({group}:{group:any}) => {
     const [open,setOpen]=useState(false)
     const {data}=useSession()
     const {address}=useAccount()
 
-  const {writeContract,isPending}=useWriteContract()
+  const {writeContract,isPending,error}=useWriteContract()
 
-  const pairAmount=1*10**18
+  const pairAmount=1*10**18 * 88
   const handleWriteContract=async({
     amount,
     email,
@@ -30,14 +30,20 @@ const SettleUp = ({group}:{group:any}) => {
     groupId:string
   })=>{
 
+    const pairAmountConverted=amount * pairAmount
+
     writeContract({
       address: baseContractAddress.BASE_BRIDGE_ADDRESS as `0x${string}`,
-      abi: tokenBaseAbi,
+      abi: tokenBridgeBaseAbi,
       functionName: "initiateBridgeTransaction",
-      args:[amount,email,groupId]
+      args:[pairAmountConverted,email,groupId]
     })
   }
 
+
+  useEffect(()=>{
+    console.log(error)
+  },[error])
   // Temporary pair amount
  
 
@@ -111,14 +117,7 @@ const SettleUp = ({group}:{group:any}) => {
                             <div className='flex items-center gap-2 justify-between w-full'>
                             <p className='text-orange-300'>$ {getSettleMentAmountForUser(e)}</p>
                             <Button onClick={()=>{
-                              handleWriteContract({amount:getSettleMentAmountForUser(e),email:e,groupId:group.id}).then(()=>{
-                                handleSettleUp({
-                                  receiver: getPrimaryAddressOfTheReceipent(e).address,
-                                  amount: getSettleMentAmountForUser(e)*pairAmount,
-                                  email:e,
-                                  groupId: group?.id
-                                })
-                              })
+                              handleWriteContract({amount:getSettleMentAmountForUser(e),email:e,groupId:group.id})
                             }
                             } disabled={isPending}>{isPending?<Loader2 className='animate-spin'/>:"Pay"}</Button>
                             </div>

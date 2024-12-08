@@ -69,7 +69,7 @@ const AddGroup = () => {
       </DialogTrigger>
       <DialogContent className='h-[100svh] w-[100vw] md:h-[80vh] md:w-[80vw] flex flex-col gap-8 justify-normal'>
         <DialogHeader className='h-fit'>
-          <DialogTitle>Add Expense</DialogTitle>
+          <DialogTitle>Add Expense Group</DialogTitle>
         </DialogHeader>
         <div className='flex flex-col gap-4 justify-start h-full'>
             <Form {...form}>
