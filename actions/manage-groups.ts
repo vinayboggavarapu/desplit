@@ -92,3 +92,34 @@ export const deleteGroup=async(id:string)=>{
         }
     }
 }
+
+
+export const updateGroupMembers=async({groupId,email}:{groupId:string,email:string})=>{
+    const session=await auth()
+    console.log("calling",email)
+    if(!session?.user) throw new Error("Unauthorized")
+        const getPrimaryAddressOfUser=await prisma.user.findUnique({where:{email:session?.user.email!}})
+
+    try {
+        
+
+        await prisma.expense_member.updateMany({
+            where:{
+                group_id:groupId,
+                user:{
+                    id:getPrimaryAddressOfUser?.id
+                }
+            },
+            data:{
+                amount:0
+            }
+        })
+    } catch (error) {
+        console.log("error",error)
+    }
+        revalidatePath(`/groups/${groupId}`)
+        return {
+            success:true,
+            message:"Settled up successfully"
+        }
+}
