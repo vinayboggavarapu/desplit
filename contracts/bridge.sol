@@ -10,14 +10,14 @@ contract Bridge is Ownable {
     // Event emitted when tokens are locked
     event TokensLocked(address indexed user, uint256 amount);
     // Event emitted when tokens are burned, now includes emailID and groupID
-    event TokensBurned(address indexed user, uint256 amount, string emailID, uint256 groupID);
+    event TokensBurned(address indexed user, uint256 amount, string emailID, string groupID);
 
     constructor(IERC20 _token, address initialOwner) Ownable(initialOwner) {
         token = _token; // Set the token to be bridged
     }
 
     // Function to initiate a bridge transaction
-    function initiateBridgeTransaction(uint256 amount, string calldata emailID, uint256 groupID) external {
+    function initiateBridgeTransaction(uint256 amount, string memory emailID,string memory groupID) external {
         require(amount > 0, "Amount must be greater than 0");
 
         // Transfer tokens from the user to the bridge contract
@@ -31,7 +31,7 @@ contract Bridge is Ownable {
     }
 
     // Internal function to burn tokens
-    function _burnTokens(uint256 amount, string calldata emailID, uint256 groupID) internal {
+    function _burnTokens(uint256 amount, string memory emailID, string memory groupID) internal {
         require(amount > 0, "Amount must be greater than 0");
         
         // Burn the tokens by sending them to the zero address
