@@ -146,7 +146,9 @@ const SettleUp = ({group}:{group:any}) => {
                             <div className='flex items-center gap-2 justify-between w-full'>
                             <p className='text-orange-300'>$ {getSettleMentAmountForUser(e)}</p>
                             <Button onClick={()=>{
+                              if(getSettleMentAmountForUser(e)<0){
                               handleWriteContract({receipent:getPrimaryAddressOfTheReceipent({email:e}).address,amount:getSettleMentAmountForUser(e),email:e,groupId:group.id})
+                              }
                             }
                             } disabled={pending}>{ pending?<Loader2 className='animate-spin'/>:"Pay"}</Button>
                             </div>
