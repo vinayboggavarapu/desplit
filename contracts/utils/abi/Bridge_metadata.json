@@ -85,9 +85,9 @@
 					},
 					{
 						"indexed": false,
-						"internalType": "uint256",
+						"internalType": "string",
 						"name": "groupID",
-						"type": "uint256"
+						"type": "string"
 					}
 				],
 				"name": "TokensBurned",
@@ -143,9 +143,9 @@
 						"type": "string"
 					},
 					{
-						"internalType": "uint256",
+						"internalType": "string",
 						"name": "groupID",
-						"type": "uint256"
+						"type": "string"
 					}
 				],
 				"name": "initiateBridgeTransaction",
@@ -274,11 +274,11 @@
 			]
 		},
 		"contracts/bridge.sol": {
-			"keccak256": "0x6e6d34c0bf1d13c03407930248b749559f6c7736c60ee771760641ab8dd797a1",
+			"keccak256": "0x296c4ca055f5abf2d186187310b28155da65f1c6b38faaee828d27cb27e3d7ed",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://67b8c7d20ccead6577fa10824a1f3c1fdfbfd1fb7c147bbe966af66148346cb3",
-				"dweb:/ipfs/QmcqXP2VNHaFvqo9qW5sxGKEECjaj9qUFjojm2mWQtDaHP"
+				"bzz-raw://c3a8d00f25ad9f1ded11212600d27bb1964c481a1c5328260b3d3e87fa161787",
+				"dweb:/ipfs/QmbkjgqndtcVLBtV4inLFbWHPZ895GrmQ5nGi4ZrAzbvoi"
 			]
 		}
 	},
