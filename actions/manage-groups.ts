@@ -102,13 +102,10 @@ export const updateGroupMembers=async({groupId,email}:{groupId:string,email:stri
 
     try {
         
-
         await prisma.expense_member.updateMany({
             where:{
                 group_id:groupId,
-                user:{
-                    id:getPrimaryAddressOfUser?.id
-                }
+                user_id:getPrimaryAddressOfUser?.id
             },
             data:{
                 amount:0
