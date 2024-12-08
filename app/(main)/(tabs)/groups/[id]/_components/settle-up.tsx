@@ -101,8 +101,9 @@ const SettleUp = ({group}:{group:any}) => {
   const getSettleMentAmountForUser=(email:string)=>{
     const settleMentAmount=group?.expenses.reduce((acc:number,expense:any)=>{
         const expenseMembers=expense.expense_members
-        const payee=expenseMembers.find((member:any)=>member.user?.email===data?.user?.email)
-        if(payee?.isPayee){
+        const payee=expenseMembers.find((member:any)=>member.user?.email===email)
+        const userToBeSettled=expenseMembers.find((member:any)=>member.user?.email===data?.user?.email)
+        if(payee?.isPayee&&userToBeSettled?.amount>0){
             return acc+expense.amount/expenseMembers.length
         }
         else{
@@ -146,7 +147,7 @@ const SettleUp = ({group}:{group:any}) => {
                             <div className='flex items-center gap-2 justify-between w-full'>
                             <p className='text-orange-300'>$ {getSettleMentAmountForUser(e)}</p>
                             <Button onClick={()=>{
-                              if(getSettleMentAmountForUser(e)<0){
+                              if(getSettleMentAmountForUser(e)){
                               handleWriteContract({receipent:getPrimaryAddressOfTheReceipent({email:e}).address,amount:getSettleMentAmountForUser(e),email:e,groupId:group.id})
                               }
                             }
