@@ -101,7 +101,7 @@ const SettleUp = ({group}:{group:any}) => {
   const getSettleMentAmountForUser=(email:string)=>{
     const settleMentAmount=group?.expenses.reduce((acc:number,expense:any)=>{
         const expenseMembers=expense.expense_members
-        const payee=expenseMembers.find((member:any)=>member.user?.email===email)
+        const payee=expenseMembers.find((member:any)=>member.user?.email===data?.user?.email)
         if(payee?.isPayee){
             return acc+expense.amount/expenseMembers.length
         }
