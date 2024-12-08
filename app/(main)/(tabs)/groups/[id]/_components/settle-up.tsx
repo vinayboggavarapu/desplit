@@ -9,6 +9,8 @@ import React, { useState } from 'react'
 import { useAccount, useWriteContract } from 'wagmi'
 import { Loader2 } from 'lucide-react'
 import axios from 'axios'
+import { baseContractAddress } from '@/contracts/utils/base/address'
+import { tokenBaseAbi } from '@/contracts/utils/base/cross-chain-bridge'
 
 const SettleUp = ({group}:{group:any}) => {
     const [open,setOpen]=useState(false)
@@ -17,6 +19,7 @@ const SettleUp = ({group}:{group:any}) => {
 
   const {writeContract,isPending}=useWriteContract()
 
+  const pairAmount=1*10**18
   const handleWriteContract=async({
     amount,
     email,
@@ -26,16 +29,17 @@ const SettleUp = ({group}:{group:any}) => {
     email:string,
     groupId:string
   })=>{
+
     writeContract({
-      address: opBnbContractAddress.bridgeAddress as `0x${string}`,
-      abi: tokenBnbBridgeAbi,
-      functionName: "lockAndBurnTokens",
-      args:[amount,groupId,email]
+      address: baseContractAddress.BASE_BRIDGE_ADDRESS as `0x${string}`,
+      abi: tokenBaseAbi,
+      functionName: "initiateBridgeTransaction",
+      args:[amount,email,groupId]
     })
   }
 
   // Temporary pair amount
-  const pairAmount=0.0005
+ 
 
   const handleSettleUp=async({
     receiver,
@@ -48,13 +52,13 @@ const SettleUp = ({group}:{group:any}) => {
     email:string,
     groupId:string
   })=>{
-
     const pairAmountConverted=amount * pairAmount
+    console.log("pairAmountConverted",pairAmountConverted)
     writeContract({
       address: opBnbContractAddress.bridgeAddress as `0x${string}`,
       abi: tokenBnbBridgeAbi,
       functionName: "mintTokens",
-      args:[pairAmountConverted,groupId,email]
+      args:[groupId,email]
     })
   }
 
